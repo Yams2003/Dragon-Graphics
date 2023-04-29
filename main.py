@@ -1,38 +1,13 @@
-import pygame
+from utils import *
 
-import sys
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Dragon Graphics")
 
-import os
+run = True
 
-from pygame.locals import *
-
-
-pygame.init()
-
-clock = pygame.time.Clock()
-
-screen = pygame.display.set_mode((600, 480))
-
-# bg = pygame.image.load(os.path.join("./", "background.png"))
-
-pygame.mouse.set_visible(True)
-
-pygame.display.set_caption('Dragon Graphics')
-
-while True:
-
-    clock.tick(60)
-
-    # screen.blit(bg, (0, 0))
-
-    x, y = pygame.mouse.get_pos()
-
-
+while run:
     for event in pygame.event.get():
-
         if event.type == pygame.QUIT:
+            run = False
 
-            sys.exit()
-
-
-    pygame.display.update()
+pygame.quit()
