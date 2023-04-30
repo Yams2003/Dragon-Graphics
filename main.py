@@ -1,8 +1,11 @@
+import pygame
+from Command_Pattern.commandHistory import CommandHistory
 from utils import *
+from utils.drawCommand import DrawCommand
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Dragon Graphics")
-
+commandHistory = CommandHistory()
 
 def init_grid(rows, cols, color):
     grid = []
@@ -43,6 +46,7 @@ run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
+drawCache = []
 
 while run:
     clock.tick(FPS)
@@ -53,9 +57,19 @@ while run:
             position = pygame.mouse.get_pos()
             try:
                 row, col = get_row_col_from_pos(position)
+                drawCache.append([row,col])
                 grid[row][col] = drawing_color
             except IndexError:
                 pass
+        if event.type == pygame.MOUSEBUTTONUP:
+            commandHistory.pushCommandToUndo(DrawCommand(drawCache, grid, drawing_color))
+            drawCache = []
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                commandHistory.undo()
+            if event.key == pygame.K_e:
+                commandHistory.redo()
+
     draw(WIN, grid)
 
 pygame.quit()
