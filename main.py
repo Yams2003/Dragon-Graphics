@@ -78,10 +78,7 @@ while run:
                         grid = init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
                     if button.text == "GRID":
-                        if DRAW_GRID_LINES:
-                            DRAW_GRID_LINES = False
-                        else:
-                            DRAW_GRID_LINES = True
+                        DRAW_GRID_LINES = not(DRAW_GRID_LINES)
 
     draw(WIN, grid)
 
