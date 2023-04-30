@@ -13,6 +13,5 @@ class DrawCommand(Command):
             self.__grid[pos[0]][pos[1]] = self.__drawingColor
 
     def unexecute(self):
-        print(self.__drawCache)
         for pos in self.__drawCache:
             self.__grid[pos[0]][pos[1]] = settings.WHITE
