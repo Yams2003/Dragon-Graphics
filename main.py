@@ -30,15 +30,32 @@ def draw(win, grid):
     pygame.display.update()
 
 
+def get_row_col_from_pos(position):
+    x, y = position
+    row = y // PIXEL_SIZE
+    col = x // PIXEL_SIZE
+    if row >= ROWS:
+        raise IndexError
+    return row, col
+
+
 run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
+drawing_color = BLACK
 
 while run:
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if pygame.mouse.get_pressed()[0]:
+            position = pygame.mouse.get_pos()
+            try:
+                row, col = get_row_col_from_pos(position)
+                grid[row][col] = drawing_color
+            except IndexError:
+                pass
     draw(WIN, grid)
 
 pygame.quit()
