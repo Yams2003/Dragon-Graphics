@@ -13,6 +13,8 @@ We were planning on impelementing an instructional component that explains the f
 * fill bucket tool that highlights the algorithms of Breadth-First Search and Depth-First Search
 * a walkthrough tutorial that allows users to step through and back and visit each of the concepts
 
+## Inspiration
+We were motivated by our professor Dr. Brian Stuart and his passionate lectures. We decided to incorporate his lecture about computer graphics from his Intro to Computer Science class, and demonstrate it to students at a high school level to get an introductory level understanding of the topic.
 
 ## Setup
 
