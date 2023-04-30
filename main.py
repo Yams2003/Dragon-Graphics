@@ -27,6 +27,8 @@ def draw_grid(win, grid):
 def draw(win, grid):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
+    for button in buttons:
+        button.draw(win)
     pygame.display.update()
 
 
@@ -44,6 +46,19 @@ clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
 
+
+# list containing all the buttons available for use
+button_y = HEIGHT - TOOLBAR_HEIGHT/2 - 25
+buttons = [
+    Button(10, button_y, 50, 50, BLACK),
+    Button(70, button_y, 50, 50, RED),
+    Button(130, button_y, 50, 50, GREEN),
+    Button(190, button_y, 50, 50, BLUE),
+    Button(250, button_y, 50, 50, WHITE, "ERASER", BLACK),
+    Button(310, button_y, 50, 50, WHITE, "CLEAR", BLACK),
+    Button(370, button_y, 50, 50, WHITE, "GRID", BLACK)
+    ]
+
 while run:
     clock.tick(FPS)
     for event in pygame.event.get():
@@ -55,7 +70,19 @@ while run:
                 row, col = get_row_col_from_pos(position)
                 grid[row][col] = drawing_color
             except IndexError:
-                pass
+                for button in buttons:
+                    if not button.clicked(position):
+                        continue
+                    drawing_color = button.color
+                    if button.text == "CLEAR":
+                        grid = init_grid(ROWS, COLS, BG_COLOR)
+                        drawing_color = BLACK
+                    if button.text == "GRID":
+                        if DRAW_GRID_LINES == True:
+                            DRAW_GRID_LINES = False
+                        else:
+                            DRAW_GRID_LINES = True
+
     draw(WIN, grid)
 
 pygame.quit()
