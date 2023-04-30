@@ -57,7 +57,6 @@ buttons = [
     Button(90, button_y, 50, 50, WHITE, "eraser", BLACK),
     Button(170, button_y, 50, 50, WHITE, "clear", BLACK),
     Button(250, button_y, 50, 50, WHITE, "grid", BLACK),
-    Button(330, button_y, 50, 50, WHITE, "fill", BLACK)
     ]
 
 while run:
@@ -98,6 +97,8 @@ while run:
                         g = int(input("Enter G value (0-255): "))
                         b = int(input("Enter B value (0-255): "))
                         drawing_color = (r, g, b)
+                        buttons[0].color = drawing_color
+                        buttons[0].text_color = drawing_color
                     if button.text == "clear":
                         grid = init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
