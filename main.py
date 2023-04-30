@@ -1,4 +1,3 @@
-import pygame
 from Command_Pattern.commandHistory import CommandHistory
 from utils import *
 from utils.drawCommand import DrawCommand
@@ -54,13 +53,11 @@ drawCache = []
 # list containing all the buttons available for use
 button_y = HEIGHT - TOOLBAR_HEIGHT/2 - 25
 buttons = [
-    Button(10, button_y, 50, 50, BLACK),
-    Button(70, button_y, 50, 50, RED),
-    Button(130, button_y, 50, 50, GREEN),
-    Button(190, button_y, 50, 50, BLUE),
-    Button(250, button_y, 50, 50, WHITE, "ERASER", BLACK),
-    Button(310, button_y, 50, 50, WHITE, "CLEAR", BLACK),
-    Button(370, button_y, 50, 50, WHITE, "GRID", BLACK)
+    Button(10, button_y, 50, 50, drawing_color, "color", drawing_color),
+    Button(90, button_y, 50, 50, WHITE, "eraser", BLACK),
+    Button(170, button_y, 50, 50, WHITE, "clear", BLACK),
+    Button(250, button_y, 50, 50, WHITE, "grid", BLACK),
+    Button(330, button_y, 50, 50, WHITE, "fill", BLACK)
     ]
 
 while run:
@@ -68,6 +65,23 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONUP:
+            commandHistory.pushCommandToUndo(DrawCommand(drawCache, grid, drawing_color))
+            drawCache = []
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                commandHistory.undo()
+            if event.key == pygame.K_e:
+                commandHistory.redo()
+            if event.key == pygame.K_c:
+                # Prompt the user for an RGB value
+                r = int(input("Enter R value (0-255): "))
+                g = int(input("Enter G value (0-255): "))
+                b = int(input("Enter B value (0-255): "))
+                drawing_color = (r, g, b)
+                # Updating the color of the button based off color
+                buttons[0].color = drawing_color
+                buttons[0].text_color = drawing_color
         if pygame.mouse.get_pressed()[0]:
             position = pygame.mouse.get_pos()
             try:
@@ -78,22 +92,19 @@ while run:
                 for button in buttons:
                     if not button.clicked(position):
                         continue
-                    drawing_color = button.color
-                    if button.text == "CLEAR":
+                    if button.text == 'color':
+                        # Prompt the user for an RGB value
+                        r = int(input("Enter R value (0-255): "))
+                        g = int(input("Enter G value (0-255): "))
+                        b = int(input("Enter B value (0-255): "))
+                        drawing_color = (r, g, b)
+                    if button.text == "clear":
                         grid = init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
-                    if button.text == "GRID":
+                    if button.text == "eraser":
+                        drawing_color = BG_COLOR
+                    if button.text == "grid":
                         DRAW_GRID_LINES = not(DRAW_GRID_LINES)
-
-                pass
-        if event.type == pygame.MOUSEBUTTONUP:
-            commandHistory.pushCommandToUndo(DrawCommand(drawCache, grid, drawing_color))
-            drawCache = []
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
-                commandHistory.undo()
-            if event.key == pygame.K_e:
-                commandHistory.redo()
 
     draw(WIN, grid)
 
