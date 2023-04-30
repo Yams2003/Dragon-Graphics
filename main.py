@@ -49,6 +49,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        '''
         if pygame.mouse.get_pressed()[0]:
             position = pygame.mouse.get_pos()
             try:
@@ -56,6 +57,7 @@ while run:
                 grid[row][col] = drawing_color
             except IndexError:
                 pass
+        '''
     draw(WIN, grid)
 
 pygame.quit()
